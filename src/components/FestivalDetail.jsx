@@ -249,8 +249,8 @@ export function FestivalDetail({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {festival.zones.map((zone) => (
-                      <TableRow key={zone.id}>
+                    {festival.zones.map((zone, index) => (
+                      <TableRow key={zone.id || `zone-${index}`}>
                         <TableCell className="font-medium">{zone.name}</TableCell>
                         <TableCell>
                           <Badge variant="outline">
@@ -258,7 +258,7 @@ export function FestivalDetail({
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          {zone.capacity.toLocaleString()}명
+                          {zone.capacity ? Number(zone.capacity).toLocaleString() : '0'}명
                         </TableCell>
                         <TableCell>
                           {zone.notes || '-'}
@@ -368,8 +368,8 @@ export function FestivalDetail({
                 <CardContent>
                   {crowdData.length > 0 ? (
                     <div className="space-y-4">
-                      {crowdData.map((zone) => (
-                        <div key={zone.id} className="p-4 border border-border rounded-lg">
+                      {crowdData.map((zone, index) => (
+                        <div key={zone.id || `crowd-zone-${index}`} className="p-4 border border-border rounded-lg">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-3">
                               <h4 className="font-medium">{zone.name}</h4>
@@ -384,11 +384,11 @@ export function FestivalDetail({
                           
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm text-muted-foreground">
-                              <span>현재 인원: {zone.currentCapacity?.toLocaleString()}명</span>
-                              <span>수용 가능: {zone.capacity.toLocaleString()}명</span>
+                              <span>현재 인원: {zone.currentCapacity ? Number(zone.currentCapacity).toLocaleString() : '0'}명</span>
+                              <span>수용 가능: {zone.capacity ? Number(zone.capacity).toLocaleString() : '0'}명</span>
                             </div>
                             <Progress 
-                              value={(zone.currentCapacity / zone.capacity) * 100} 
+                              value={zone.capacity ? Math.min((Number(zone.currentCapacity || 0) / Number(zone.capacity)) * 100, 100) : 0} 
                               className="h-2"
                             />
                             <div className="flex justify-between text-xs text-muted-foreground">
@@ -496,7 +496,7 @@ export function FestivalDetail({
                         <Users className="w-5 h-5 text-primary" />
                         <span className="text-sm text-muted-foreground">실제 참석자</span>
                       </div>
-                      <p className="text-2xl font-semibold">{reportData.actualAttendees.toLocaleString()}명</p>
+                      <p className="text-2xl font-semibold">{reportData.actualAttendees ? Number(reportData.actualAttendees).toLocaleString() : '0'}명</p>
                     </div>
 
                     <div className="p-4 bg-muted/50 rounded-lg">
@@ -538,7 +538,7 @@ export function FestivalDetail({
                           </div>
                           <div className="flex justify-between">
                             <span>실제 참석자:</span>
-                            <span>{reportData.actualAttendees.toLocaleString()}명</span>
+                            <span>{reportData.actualAttendees ? Number(reportData.actualAttendees).toLocaleString() : '0'}명</span>
                           </div>
                           <div className="flex justify-between">
                             <span>달성률:</span>
@@ -595,3 +595,594 @@ export function FestivalDetail({
     </div>
   );
 }
+
+                    <div className="flex-1">
+
+                      <h3 className="text-lg font-semibold">축제 기획 최적화</h3>
+
+                      <p className="text-muted-foreground">AI가 분석한 최적의 프로그램 구성과 배치를 제안합니다</p>
+
+                    </div>
+
+                  </div>
+
+                  
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+                    <div className="p-4 bg-blue-50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <Target className="w-5 h-5 text-blue-600" />
+
+                        <span className="text-sm font-medium text-blue-900">프로그램 추천</span>
+
+                      </div>
+
+                      <p className="text-xs text-blue-700">관객 성향 분석 기반 최적 프로그램 제안</p>
+
+                    </div>
+
+                    
+
+                    <div className="p-4 bg-green-50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <MapPin className="w-5 h-5 text-green-600" />
+
+                        <span className="text-sm font-medium text-green-900">배치 최적화</span>
+
+                      </div>
+
+                      <p className="text-xs text-green-700">동선 분석을 통한 구역별 최적 배치</p>
+
+                    </div>
+
+                    
+
+                    <div className="p-4 bg-purple-50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <BarChart3 className="w-5 h-5 text-purple-600" />
+
+                        <span className="text-sm font-medium text-purple-900">수익 예측</span>
+
+                      </div>
+
+                      <p className="text-xs text-purple-700">과거 데이터 기반 수익성 예측 모델</p>
+
+                    </div>
+
+                  </div>
+
+
+
+                  <Button 
+
+                    onClick={handlePlanFestival} 
+
+                    className="w-full gap-2"
+
+                    size="lg"
+
+                  >
+
+                    <Lightbulb className="w-5 h-5" />
+
+                    기획 도구 시작하기
+
+                  </Button>
+
+                </div>
+
+
+
+                <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+
+                  <div className="flex items-start gap-3">
+
+                    <Zap className="w-5 h-5 text-amber-600 mt-0.5" />
+
+                    <div>
+
+                      <h4 className="font-medium text-amber-900">스마트 기획 프로세스</h4>
+
+                      <p className="text-sm text-amber-700 mt-1">
+
+                        1단계: 목표 관객 분석 → 2단계: 프로그램 추천 → 3단계: 배치 최적화 → 4단계: 수익성 검토
+
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </CardContent>
+
+          </Card>
+
+        </TabsContent>
+
+
+
+        {/* 운영 지원 탭 */}
+
+        <TabsContent value="operation" className="space-y-6">
+
+          {festival.status === 'during' ? (
+
+            <>
+
+              {/* 구역별 혼잡도 */}
+
+              <Card>
+
+                <CardHeader>
+
+                  <CardTitle>실시간 구역별 혼잡도</CardTitle>
+
+                </CardHeader>
+
+                <CardContent>
+
+                  {crowdData.length > 0 ? (
+
+                    <div className="space-y-4">
+
+                      {crowdData.map((zone) => (
+
+                        <div key={zone.id} className="p-4 border border-border rounded-lg">
+
+                          <div className="flex items-center justify-between mb-3">
+
+                            <div className="flex items-center gap-3">
+
+                              <h4 className="font-medium">{zone.name}</h4>
+
+                              <Badge variant="outline">
+
+                                {zoneTypeLabels[zone.type]}
+
+                              </Badge>
+
+                            </div>
+
+                            <Badge className={getCongestionColor(zone.congestionLevel)}>
+
+                              {getCongestionLabel(zone.congestionLevel)}
+
+                            </Badge>
+
+                          </div>
+
+                          
+
+                          <div className="space-y-2">
+
+                            <div className="flex justify-between text-sm text-muted-foreground">
+
+                              <span>현재 인원: {zone.currentCapacity ? Number(zone.currentCapacity).toLocaleString() : '0'}명</span>
+                              <span>수용 가능: {zone.capacity ? Number(zone.capacity).toLocaleString() : '0'}명</span>
+                            </div>
+
+                            <Progress 
+
+                              value={zone.capacity ? Math.min((Number(zone.currentCapacity || 0) / Number(zone.capacity)) * 100, 100) : 0} 
+                              className="h-2"
+
+                            />
+
+                            <div className="flex justify-between text-xs text-muted-foreground">
+
+                              <span>혼잡도</span>
+
+                              <span>{zone.congestionLevel}%</span>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      ))}
+
+                    </div>
+
+                  ) : (
+
+                    <div className="text-center py-8 text-muted-foreground">
+
+                      구역이 설정되지 않았습니다.
+
+                    </div>
+
+                  )}
+
+                </CardContent>
+
+              </Card>
+
+
+
+              {/* SNS 실시간 반응 */}
+
+              <Card>
+
+                <CardHeader>
+
+                  <CardTitle>SNS 실시간 반응 모니터링</CardTitle>
+
+                </CardHeader>
+
+                <CardContent>
+
+                  <div className="space-y-4">
+
+                    <div className="flex items-center gap-2 mb-4">
+
+                      <MessageSquare className="w-5 h-5 text-primary" />
+
+                      <span className="font-medium">개선 필요 지점 TOP 3</span>
+
+                    </div>
+
+                    
+
+                    {snsFeedback.map((feedback, index) => (
+
+                      <div key={index} className="p-4 border border-red-200 bg-red-50 rounded-lg">
+
+                        <div className="flex items-start gap-3">
+
+                          <div className="p-2 bg-red-100 rounded-lg">
+
+                            <AlertTriangle className="w-4 h-4 text-red-600" />
+
+                          </div>
+
+                          <div className="flex-1">
+
+                            <div className="flex items-center justify-between mb-2">
+
+                              <h4 className="font-medium text-red-900">
+
+                                {index + 1}. {feedback.issue}
+
+                              </h4>
+
+                              <Badge variant="destructive" className="text-xs">
+
+                                {feedback.mentions}회 언급
+
+                              </Badge>
+
+                            </div>
+
+                            <p className="text-sm text-red-700">
+
+                              실시간 SNS에서 해당 이슈에 대한 불만이 지속적으로 제기되고 있습니다.
+
+                              즉시 대응이 필요합니다.
+
+                            </p>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    ))}
+
+
+
+                    <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <Eye className="w-5 h-5 text-blue-600" />
+
+                        <span className="font-medium text-blue-900">모니터링 현황</span>
+
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+
+                        <div className="text-center">
+
+                          <p className="font-medium text-blue-900">전체 언급</p>
+
+                          <p className="text-blue-700">1,247건</p>
+
+                        </div>
+
+                        <div className="text-center">
+
+                          <p className="font-medium text-blue-900">긍정적 반응</p>
+
+                          <p className="text-blue-700">78%</p>
+
+                        </div>
+
+                        <div className="text-center">
+
+                          <p className="font-medium text-blue-900">개선 요청</p>
+
+                          <p className="text-blue-700">22%</p>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </CardContent>
+
+              </Card>
+
+            </>
+
+          ) : (
+
+            <Card>
+
+              <CardContent className="text-center py-12">
+
+                <Activity className="w-12 h-12 mx-auto mb-4 opacity-50 text-muted-foreground" />
+
+                <p className="text-muted-foreground">축제가 운영 중일 때 실시간 운영 데이터를 확인할 수 있습니다.</p>
+
+                <p className="text-sm text-muted-foreground mt-2">
+
+                  현재 상태: {statusLabels[festival.status]}
+
+                </p>
+
+              </CardContent>
+
+            </Card>
+
+          )}
+
+        </TabsContent>
+
+
+
+        {/* 결과 리포트 탭 */}
+
+        <TabsContent value="report" className="space-y-6">
+
+          <Card>
+
+            <CardHeader>
+
+              <CardTitle>축제 결과 리포트</CardTitle>
+
+            </CardHeader>
+
+            <CardContent>
+
+              {festival.status === 'ended' && reportData ? (
+
+                <div className="space-y-6">
+
+                  {/* 주요 지표 */}
+
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                    <div className="p-4 bg-muted/50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <Users className="w-5 h-5 text-primary" />
+
+                        <span className="text-sm text-muted-foreground">실제 참석자</span>
+
+                      </div>
+
+                      <p className="text-2xl font-semibold">{reportData.actualAttendees ? Number(reportData.actualAttendees).toLocaleString() : '0'}명</p>
+                    </div>
+
+
+
+                    <div className="p-4 bg-muted/50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <Target className="w-5 h-5 text-primary" />
+
+                        <span className="text-sm text-muted-foreground">목표 달성률</span>
+
+                      </div>
+
+                      <p className="text-2xl font-semibold">{reportData.completionRate}%</p>
+
+                    </div>
+
+
+
+                    <div className="p-4 bg-muted/50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <TrendingUp className="w-5 h-5 text-primary" />
+
+                        <span className="text-sm text-muted-foreground">만족도</span>
+
+                      </div>
+
+                      <p className="text-2xl font-semibold">{reportData.satisfaction}%</p>
+
+                    </div>
+
+
+
+                    <div className="p-4 bg-muted/50 rounded-lg">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <BarChart3 className="w-5 h-5 text-primary" />
+
+                        <span className="text-sm text-muted-foreground">총 수익</span>
+
+                      </div>
+
+                      <p className="text-2xl font-semibold">{(reportData.revenue / 100000000).toFixed(1)}억원</p>
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* 상세 분석 */}
+
+                  <div className="space-y-4">
+
+                    <h3 className="text-lg font-semibold">상세 분석</h3>
+
+                    
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                      <div className="space-y-3">
+
+                        <h4 className="font-medium">참석자 현황</h4>
+
+                        <div className="space-y-2 text-sm">
+
+                          <div className="flex justify-between">
+
+                            <span>목표 참석자:</span>
+
+                            <span>{festival.target}</span>
+
+                          </div>
+
+                          <div className="flex justify-between">
+
+                            <span>실제 참석자:</span>
+
+                            <span>{reportData.actualAttendees ? Number(reportData.actualAttendees).toLocaleString() : '0'}명</span>
+                          </div>
+
+                          <div className="flex justify-between">
+
+                            <span>달성률:</span>
+
+                            <span className={reportData.completionRate >= 100 ? 'text-green-600' : 'text-orange-600'}>
+
+                              {reportData.completionRate}%
+
+                            </span>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+
+
+                      <div className="space-y-3">
+
+                        <h4 className="font-medium">운영 성과</h4>
+
+                        <div className="space-y-2 text-sm">
+
+                          <div className="flex justify-between">
+
+                            <span>평균 만족도:</span>
+
+                            <span className="text-green-600">{reportData.satisfaction}%</span>
+
+                          </div>
+
+                          <div className="flex justify-between">
+
+                            <span>총 수익:</span>
+
+                            <span>{(reportData.revenue / 100000000).toFixed(1)}억원</span>
+
+                          </div>
+
+                          <div className="flex justify-between">
+
+                            <span>구역 활용률:</span>
+
+                            <span>92%</span>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+
+                    <div className="mt-6 p-4 bg-green-50 rounded-lg">
+
+                      <h4 className="font-medium text-green-800 mb-2">종합 평가</h4>
+
+                      <p className="text-sm text-green-700">
+
+                        {reportData.completionRate >= 100 
+
+                          ? "목표를 성공적으로 달성한 성공적인 축제였습니다. 높은 만족도와 함께 예상 수익을 넘어선 실적을 기록했습니다."
+
+                          : "전체적으로 양호한 성과를 보인 축제였습니다. 일부 개선점을 보완하여 다음 축제에서 더 나은 결과를 기대할 수 있습니다."
+
+                        }
+
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ) : (
+
+                <div className="text-center py-12 text-muted-foreground">
+
+                  <Clock className="w-12 h-12 mx-auto mb-4 opacity-50" />
+
+                  <p>축제가 운영 종료된 후 결과 리포트를 확인할 수 있습니다.</p>
+
+                  {festival.status !== 'ended' && (
+
+                    <p className="text-sm mt-2">현재 상태: {statusLabels[festival.status]}</p>
+
+                  )}
+
+                </div>
+
+              )}
+
+            </CardContent>
+
+          </Card>
+
+        </TabsContent>
+
+      </Tabs>
+
+    </div>
+
+  );
+
+}
+
+

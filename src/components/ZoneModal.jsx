@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
@@ -79,6 +80,9 @@ export function ZoneModal({ isOpen, zone, onSave, onCancel }) {
           <DialogTitle>
             {isEdit ? '구역 편집' : '새 구역 생성'}
           </DialogTitle>
+          <DialogDescription>
+            {isEdit ? '기존 구역 정보를 수정합니다.' : '축제에 새로운 구역을 추가합니다.'}
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
